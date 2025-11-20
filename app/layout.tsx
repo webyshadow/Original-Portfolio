@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 //
+//
 
 import { Bebas_Neue } from 'next/font/google';
 
