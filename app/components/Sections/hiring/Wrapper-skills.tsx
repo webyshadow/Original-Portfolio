@@ -15,11 +15,12 @@ import FifthDisplayCards from "./cards/fifth-one";
 import FifthDisplayCardsTwo from "./cards/fifth-two";
 
 const sliderTexts = [
-  "Languages",
+  "Styling & Animations",
   "Frameworks & Libraries",
   "UI/UX & Design Tools",
   "Databases & Tools",
-  "Styling & Animations",
+  
+  "Languages",
 ];
 
 interface VerticalHeadingSliderProps {
@@ -96,8 +97,8 @@ function DisplayCardsDemo() {
       case 0: // Languages
         return (
           <>
-            <DisplayCards />
-            <DisplayCardsTwo />
+            <FifthDisplayCards />
+            <FifthDisplayCardsTwo />
           </>
         );
       case 1: // Frameworks & Libraries
@@ -124,8 +125,8 @@ function DisplayCardsDemo() {
       case 4: // Styling & Animations
         return (
           <>
-            <FifthDisplayCards />
-            <FifthDisplayCardsTwo />
+            <DisplayCards />
+            <DisplayCardsTwo />
           </>
         );
       default:

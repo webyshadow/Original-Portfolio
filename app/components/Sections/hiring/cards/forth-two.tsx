@@ -42,26 +42,32 @@ function DisplayCard({
   );
 }
 
+// ForthDisplayCardsTwo.tsx  -> Tools (3 cards)
 export default function ForthDisplayCardsTwo() {
-  // 🔥 Single source of truth for number of cards + content + per-card classes
   const cardsConfig: DisplayCardProps[] = [
     {
-      title: "Full‑Stack Projects",
-      description: "End‑to‑end apps with Next.js & Node.",
-      date: "2024 – Present",
+      title: "Prisma",
+      description: "Type‑safe ORM layer",
+      date: "DB tooling",
       className:
-        "[grid-area:stack] hover:-translate-y-10 before:absolute before:w-[100%] before:outline-1 before:rounded-xl before:outline-border before:h-[100%] before:content-[''] before:bg-blend-overlay before:bg-background/50 grayscale-[100%] hover:before:opacity-0 before:transition-opacity before:duration-700 hover:grayscale-0 before:left-0 before:top-0",
+        "[grid-area:stack] hover:-translate-y-10 before:absolute before:w-[100%] before:outline-1 before:rounded-xl before:outline-border before:h-[100%] before:content-[''] before:bg-blend-overlay before:bg-background/50 grayscale-[100%] hover:before:opacity-0 before:transition-opacity before:duration-700 hover:grayscale-0 before:left-0 before:top-0 text-zinc-100",
     },
     {
-      title: "UI / UX & 3D",
-      description: "Interactive, physics‑driven portfolio sections.",
-      date: "Freelance",
+      title: "Docker",
+      description: "Dev and deploy containers",
+      date: "Environments",
       className:
-        "[grid-area:stack] translate-x-16 translate-y-10 hover:-translate-y-1 before:absolute before:w-[100%] before:outline-1 before:rounded-xl before:outline-border before:h-[100%] before:content-[''] before:bg-blend-overlay before:bg-background/50 grayscale-[100%] hover:before:opacity-0 before:transition-opacity before:duration-700 hover:grayscale-0 before:left-0 before:top-0",
-    }
+        "[grid-area:stack] translate-x-16 translate-y-10 hover:-translate-y-1 before:absolute before:w-[100%] before:outline-1 before:rounded-xl before:outline-border before:h-[100%] before:content-[''] before:bg-blend-overlay before:bg-background/50 grayscale-[100%] hover:before:opacity-0 before:transition-opacity before:duration-700 hover:grayscale-0 before:left-0 before:top-0 text-zinc-100",
+    },
+    {
+      title: "Resend / Nodemailer",
+      description: "Transactional email flows",
+      date: "Mail stack",
+      className:
+        "[grid-area:stack] translate-x-32 translate-y-20 hover:translate-y-10 text-zinc-100",
+    },
   ];
 
-  // ✅ Add/remove/change cards by editing only `cardsConfig`
   return (
     <div className="grid [grid-template-areas:'stack'] place-items-center opacity-100 animate-in fade-in-0 duration-700">
       {cardsConfig.map((card, index) => (

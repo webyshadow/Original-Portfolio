@@ -9,11 +9,11 @@ const greatVibes = Great_Vibes({
 
 export default function GetInTouch() {
   const contacts = [
-    { label: 'Email', value: 'hello@shadmaan.dev', href: 'mailto:hello@shadmaan.dev' },
-    { label: 'Phone', value: '+91 123 456 7890', href: 'tel:+911234567890' },
-    { label: 'LinkedIn', value: 'linkedin.com/in/shadmaan', href: 'https://linkedin.com/in/shadmaan' },
-    { label: 'GitHub', value: 'github.com/shadmaan', href: 'https://github.com/shadmaan' },
-    { label: 'Twitter', value: '@shadmaan_dev', href: 'https://twitter.com/shadmaan_dev' },
+    { label: 'Email', value: 'ansari.shaws@gmail.com', href: 'mailto:ansari.shaws@gmail.com' },
+    { label: 'Telegram', value: 'WebyShadow', href: 't.me/WebyShadow' },
+    { label: 'LinkedIn', value: 'linkedin.com/in/shadmaan-ansari', href: 'https://linkedin.com/in/shadmaan-ansari' },
+    { label: 'GitHub', value: 'github.com/webyshadow', href: 'https://github.com/webyshadow' },
+    { label: 'Twitter/X', value: '@xhadmaan', href: 'https://x.com/xhadmaan?t=URfdj3K1ehXwMTrHD7_Cxg&s=09' },
   ];
 
   return (

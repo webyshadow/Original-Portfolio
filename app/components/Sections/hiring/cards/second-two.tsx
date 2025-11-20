@@ -42,20 +42,32 @@ function DisplayCard({
   );
 }
 
+// SecondDisplayCardsTwo.tsx
 export default function SecondDisplayCardsTwo() {
-  // 🔥 Single source of truth for number of cards + content + per-card classes
   const cardsConfig: DisplayCardProps[] = [
     {
-      title: "Full‑Stack Projects",
-      description: "End‑to‑end apps with Next.js & Node.",
-      date: "2024 – Present",
+      title: "State & Data",
+      description: "Redux, RTK Query, TanStack.",
+      date: "Data layer",
       className:
-        "[grid-area:stack] hover:-translate-y-10 before:absolute before:w-[100%] before:outline-1 before:rounded-xl before:outline-border before:h-[100%] before:content-[''] before:bg-blend-overlay before:bg-background/50 grayscale-[100%] hover:before:opacity-0 before:transition-opacity before:duration-700 hover:grayscale-0 before:left-0 before:top-0",
+        "[grid-area:stack] hover:-translate-y-10 before:absolute before:w-[100%] before:outline-1 before:rounded-xl before:outline-border before:h-[100%] before:content-[''] before:bg-blend-overlay before:bg-background/50 grayscale-[100%] hover:before:opacity-0 before:transition-opacity before:duration-700 hover:grayscale-0 before:left-0 before:top-0 text-zinc-100",
     },
-    
+    {
+      title: "3D & Motion",
+      description: "Three.js, R3F, GSAP, Spline.",
+      date: "Interactive",
+      className:
+        "[grid-area:stack] translate-x-16 translate-y-10 hover:-translate-y-1 before:absolute before:w-[100%] before:outline-1 before:rounded-xl before:outline-border before:h-[100%] before:content-[''] before:bg-blend-overlay before:bg-background/50 grayscale-[100%] hover:before:opacity-0 before:transition-opacity before:duration-700 hover:grayscale-0 before:left-0 before:top-0 text-zinc-100",
+    },
+    {
+      title: "Tooling & Extras",
+      description: "Zod, Resend, Prisma, Docker.",
+      date: "Ecosystem",
+      className:
+        "[grid-area:stack] translate-x-32 translate-y-20 hover:translate-y-10 text-zinc-100",
+    },
   ];
 
-  // ✅ Add/remove/change cards by editing only `cardsConfig`
   return (
     <div className="grid [grid-template-areas:'stack'] place-items-center opacity-100 animate-in fade-in-0 duration-700">
       {cardsConfig.map((card, index) => (

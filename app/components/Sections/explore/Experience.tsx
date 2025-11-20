@@ -10,33 +10,33 @@ type ExperienceItem = {
   years: string;
   description: string;
 };
-
 const EXPERIENCE_ITEMS: ExperienceItem[] = [
   {
     id: "exp-1",
-    role: "Full‑Stack Developer",
-    company: "Freelance • Remote",
-    years: "2023 – Present",
+    role: "Software Developer Intern",
+    company: "Webseeder Technologies • Remote",
+    years: "2024 – Present",
     description:
-      "Building end‑to‑end web apps with Next.js, React, Tailwind and REST/GraphQL APIs.",
+      "Contributing to production‑ready web applications as a software developer intern, focusing on clean architecture, reusable components and smooth user experiences.",
   },
   {
     id: "exp-2",
-    role: "Frontend Developer Intern",
-    company: "Webseeder Technologies",
-    years: "2024",
+    role: "Freelance Full‑Stack Developer",
+    company: "Client Projects • Remote",
+    years: "2022 – Present",
     description:
-      "Implemented pixel‑perfect UIs, animations and dashboards using React, Redux and Tailwind.",
+      "Designing and building custom websites, dashboards and e‑commerce experiences end‑to‑end, from UX and frontend to backend APIs and database design.",
   },
   {
     id: "exp-3",
-    role: "UI/UX & 3D Enthusiast",
-    company: "Personal Projects",
-    years: "2022 – Present",
+    role: "Mentor • Software Development Cell",
+    company: "College Technical Community",
+    years: "2023 – Present",
     description:
-      "Experimenting with 3D, motion, and interaction‑driven interfaces using R3F, GSAP and design tools.",
+      "Guiding students for over a year on modern web development, project structure and best practices while helping teams ship real, portfolio‑ready applications.",
   },
 ];
+
 
 const WORD = "Experience";
 
@@ -206,18 +206,20 @@ function PendulumTimeline({ items }: PendulumTimelineProps) {
                 <div className="h-32 md:h-40 w-[2px] bg-gradient-to-b from-zinc-300 via-zinc-500 to-zinc-700" />
 
                 {/* Card */}
-                <div className="mt-3 w-52 md:w-64 rounded-2xl border border-zinc-700/80 bg-zinc-900/90 px-4 py-4 shadow-[0_18px_45px_rgba(0,0,0,0.75)] backdrop-blur-md text-white">
-                  <p className="text-xs font-medium uppercase tracking-[0.2em] text-zinc-400">
-                    {item.years}
-                  </p>
-                  <h3 className="mt-2 text-lg md:text-xl font-semibold text-zinc-50">
-                    {item.role}
-                  </h3>
-                  <p className="text-sm text-zinc-400">{item.company}</p>
-                  <p className="mt-3 text-sm leading-relaxed text-zinc-300">
-                    {item.description}
-                  </p>
-                </div>
+{/* Card */}
+<div className="mt-3 w-52 md:w-64 rounded-2xl border border-zinc-700/70 bg-zinc-900/70 px-4 py-4 shadow-[0_22px_60px_rgba(0,0,0,0.25)] backdrop-blur-xl text-white">
+  <p className="text-xs font-medium uppercase tracking-[0.2em] text-zinc-400/90">
+    {item.years}
+  </p>
+  <h3 className="mt-2 text-lg md:text-xl font-semibold text-zinc-50">
+    {item.role}
+  </h3>
+  <p className="text-sm text-zinc-400/90">{item.company}</p>
+  <p className="mt-3 text-sm leading-relaxed text-zinc-200">
+    {item.description}
+  </p>
+</div>
+
               </motion.div>
             </motion.div>
           );

@@ -10,21 +10,14 @@ export function HeroScrollDemo() {
       <ContainerScroll
         titleComponent={
           <>
-            <h1 className="text-4xl font-semibold text-black dark:text-white">
-              Unleash the power of <br />
-              <span className="mt-1 text-4xl font-bold leading-none md:text-[6rem]">
-                Scroll Animations
-              </span>
-            </h1>
-            <p className="mt-4 max-w-xl text-sm text-neutral-600 dark:text-neutral-300 md:text-base">
-              Smooth perspective transforms and scroll-based 3D card motion
-              built with Framer Motion and Tailwind CSS.
-            </p>
+            <h2 className="text-[5vw] uppercase font-extrabold text-black/60 dark:text-white">
+              A little Story of Mine
+            </h2>
           </>
         }
       >
         <Image
-          src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4"
+          src="/Screenshot (119).png"
           alt="Dashboard preview"
           height={720}
           width={1400}

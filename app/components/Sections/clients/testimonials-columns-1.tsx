@@ -5,9 +5,9 @@ import { motion } from "motion/react";
 
 export type Testimonial = {
   text: string;
-  image: string;
-  name: string;
-  role: string;
+  image?: string | null;
+  name?: string;
+  role?: string;
 };
 
 type TestimonialsColumnProps = {
@@ -41,23 +41,36 @@ export const TestimonialsColumn: React.FC<TestimonialsColumnProps> = ({
                 key={i}
               >
                 <div className="text-gray-800">{text}</div>
-                <div className="flex items-center gap-2 mt-5">
-                  <img
-                    width={40}
-                    height={40}
-                    src={image}
-                    alt={name}
-                    className="h-10 w-10 rounded-full object-cover"
-                  />
-                  <div className="flex flex-col">
-                    <div className="font-medium text-gray-900 tracking-tight leading-5">
-                      {name}
-                    </div>
-                    <div className="leading-5 text-gray-600 opacity-80 tracking-tight">
-                      {role}
-                    </div>
+
+                {/* sirf tab dikhao jab kuch info ho */}
+                {(image || name || role) && (
+                  <div className="flex items-center gap-2 mt-5">
+                    {image && (
+                      <img
+                        width={40}
+                        height={40}
+                        src={image}
+                        alt={name || "Client"}
+                        className="h-10 w-10 rounded-full object-cover"
+                      />
+                    )}
+
+                    {(name || role) && (
+                      <div className="flex flex-col">
+                        {name && (
+                          <div className="font-medium text-gray-900 tracking-tight leading-5">
+                            {name}
+                          </div>
+                        )}
+                        {role && (
+                          <div className="leading-5 text-gray-600 opacity-80 tracking-tight">
+                            {role}
+                          </div>
+                        )}
+                      </div>
+                    )}
                   </div>
-                </div>
+                )}
               </div>
             ))}
           </React.Fragment>

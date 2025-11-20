@@ -37,36 +37,37 @@ function DisplayCard({
         <p className={cn("text-lg font-medium", titleClassName)}>{title}</p>
       </div>
       <p className="whitespace-nowrap text-lg">{description}</p>
-      <p className="text-muted-foreground">{date}</p>
     </div>
   );
 }
 
 export default function DisplayCards() {
   // 🔥 Single source of truth for number of cards + content + per-card classes
-  const cardsConfig: DisplayCardProps[] = [
-    {
-      title: "Full‑Stack Projects",
-      description: "End‑to‑end apps with Next.js & Node.",
-      date: "2024 – Present",
-      className:
-        "[grid-area:stack] hover:-translate-y-10 before:absolute before:w-[100%] before:outline-1 before:rounded-xl before:outline-border before:h-[100%] before:content-[''] before:bg-blend-overlay before:bg-background/50 grayscale-[100%] hover:before:opacity-0 before:transition-opacity before:duration-700 hover:grayscale-0 before:left-0 before:top-0",
-    },
-    {
-      title: "UI / UX & 3D",
-      description: "Interactive, physics‑driven portfolio sections.",
-      date: "Freelance",
-      className:
-        "[grid-area:stack] translate-x-16 translate-y-10 hover:-translate-y-1 before:absolute before:w-[100%] before:outline-1 before:rounded-xl before:outline-border before:h-[100%] before:content-[''] before:bg-blend-overlay before:bg-background/50 grayscale-[100%] hover:before:opacity-0 before:transition-opacity before:duration-700 hover:grayscale-0 before:left-0 before:top-0",
-    },
-    {
-      title: "Experience",
-      description: "Webseeder internship & international clients.",
-      date: "1–2 yrs",
-      className:
-        "[grid-area:stack] translate-x-32 translate-y-20 hover:translate-y-10",
-    },
-  ];
+// DisplayCards.tsx  -> Core languages (C/C++/JS)
+const cardsConfig: DisplayCardProps[] = [
+  {
+    title: "CPP",
+    description: "Strong problem solving",
+    date: "Core language",
+    className:
+      "[grid-area:stack] hover:-translate-y-10 before:absolute before:w-[100%] before:outline-1 before:rounded-xl before:outline-border before:h-[100%] before:content-[''] before:bg-blend-overlay before:bg-background/50 grayscale-[100%] hover:before:opacity-0 before:transition-opacity before:duration-700 hover:grayscale-0 before:left-0 before:top-0 text-zinc-100",
+  },
+  {
+    title: "C",
+    description: "Low‑level foundations",
+    date: "Systems basics",
+    className:
+      "[grid-area:stack] translate-x-16 translate-y-10 hover:-translate-y-1 before:absolute before:w-[100%] before:outline-1 before:rounded-xl before:outline-border before:h-[100%] before:content-[''] before:bg-blend-overlay before:bg-background/50 grayscale-[100%] hover:before:opacity-0 before:transition-opacity before:duration-700 hover:grayscale-0 before:left-0 before:top-0 text-zinc-100",
+  },
+  {
+    title: "JavaScript",
+    description: "Dynamic web logic",
+    date: "Frontend core",
+    className:
+      "[grid-area:stack] translate-x-32 translate-y-20 hover:translate-y-10 text-zinc-100",
+  },
+];
+
 
   // ✅ Add/remove/change cards by editing only `cardsConfig`
   return (
