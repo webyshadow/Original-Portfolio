@@ -1,0 +1,25 @@
+[build]
+  command = "npm run build"
+  publish = ".next"
+
+[build.environment]
+  NODE_VERSION = "18.17.0"
+  NODE_OPTIONS = "--max-old-space-size=4096"
+
+# Essential Next.js plugin
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
+
+# Redirects for Next.js routing
+[[redirects]]
+  from = "/*"
+  to = "/"
+  status = 200
+  force = false
+  conditions = {Role = ["admin"]}
+
+# SPA fallback
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
