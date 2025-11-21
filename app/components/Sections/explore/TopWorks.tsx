@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useInView } from "framer-motion"; // Added useInView
 import { ArrowRight } from "lucide-react";
 
 // ================== PROJECT DATA ==================
@@ -24,9 +24,9 @@ const projects: Project[] = [
     mainImages: ["/images/kabosu/1.png", "/images/kabosu/2.png", "/images/kabosu/3.png"],
     bottomImages: ["/images/kabosu/4.png", "/images/kabosu/5.png", "/images/kabosu/6.png"],
     description:
-      "Kabosu is a playful yet carefully crafted single‑page experience inspired by the legendary Shiba Inu that became the face of the Doge meme and modern meme‑coin culture. This concept project explores how to turn a meme‑driven community into a polished Web3‑ready brand website with clear token storytelling, on‑chain transparency sections and community highlights. The layout focuses on strong hero visuals, responsive UI and clean typography so holders, traders and new visitors instantly understand what Kabosu stands for without getting lost in noise. This work shows how meme projects can be presented with a professional, product‑grade interface instead of a typical low‑effort landing page. It combines smooth animations, bold branding, and conversion‑focused sections tailored for the next wave of Ethereum‑based meme tokens and NFT experiments.",
+      "Kabosu is a playful yet carefully crafted single‑page experience inspired by the legendary Shiba Inu that became the face of the Doge meme and modern meme‑coin culture. This concept project explores how to turn a meme‑driven community into a polished Web3‑ready brand website with clear token storytelling, on‑chain transparency sections and community highlights.",
     accentColor: "#F59E0B",
-    url: "https://example.com/kabosu",
+    url: "https://kabosutoken.io/",
   },
   {
     id: 2,
@@ -35,9 +35,9 @@ const projects: Project[] = [
     mainImages: ["/images/beautybliss/1.png", "/images/beautybliss/2.png", "/images/beautybliss/3.png"],
     bottomImages: ["/images/beautybliss/3.png", "/images/beautybliss/4.png"],
     description:
-      "BeautyBlussh is a single‑vendor beauty and skincare e‑commerce web app designed for a modern D2C brand that wanted a clean, conversion‑focused storefront instead of a generic template. The project includes a full product catalog with filters, variants and detailed product pages, plus cart, checkout and order tracking flows built to feel fast and mobile‑first. Special attention is given to brand storytelling through rich imagery, soft gradients, and typography that matches the tone of a premium cosmetics label. Under the hood, the app is structured for scalable SEO with clean URLs, meta data and performance‑oriented layouts to help the brand rank for targeted beauty keywords. This case shows how a custom React/Next.js e‑commerce experience can make a small beauty brand look and feel like a polished, established online store from day one.",
+      "BeautyBlussh is a single‑vendor beauty and skincare e‑commerce web app designed for a modern D2C brand that wanted a clean, conversion‑focused storefront instead of a generic template. The project includes a full product catalog with filters, variants and detailed product pages, plus cart, checkout and order tracking flows built to feel fast and mobile‑first.",
     accentColor: "#EC4899",
-    url: "https://example.com/beautyblussh",
+    url: "https://beauty-bliss-the-beauty-brand.netlify.app/",
   },
   {
     id: 3,
@@ -56,9 +56,9 @@ const projects: Project[] = [
       "/images/deploy/8.png",
     ],
     description:
-      "Deploy is a full‑stack dashboard concept for launching and monitoring modern Web3 and SaaS applications without overwhelming the user with raw dev tooling. The interface brings together deployment status, analytics, logs and environment configuration into a single, easy‑to‑scan layout inspired by real CI/CD and DevOps workflows. Each screen is designed to highlight the most important actions first, reducing cognitive load for founders and developers who just want to ship and iterate quickly. The project explores a component‑driven design system with reusable cards, tables and charts that adapt well to dark mode and high‑density data views. This work demonstrates how a complex technical product can still feel visually minimal, fast and human‑friendly while staying ready for real backend integrations and production deployments.",
+      "Deploy is a full‑stack dashboard concept for launching and monitoring modern Web3 and SaaS applications without overwhelming the user with raw dev tooling. The interface brings together deployment status, analytics, logs and environment configuration into a single, easy‑to‑scan layout inspired by real CI/CD and DevOps workflows.",
     accentColor: "#10B981",
-    url: "https://example.com/deploy",
+    url: "https://deployyyyyyy.netlify.app/",
   },
   {
     id: 4,
@@ -67,9 +67,9 @@ const projects: Project[] = [
     mainImages: ["/images/degen/1.png", "/images/degen/3.png", "/images/degen/2.png"],
     bottomImages: ["/images/degen/1.png", "/images/degen/2.png"],
     description:
-      "Degen is a Web3‑inspired product concept that reimagines how on‑chain communities discover, track and interact with high‑risk, high‑reward crypto and NFT plays. Instead of a chaotic feed, the interface organizes degen opportunities into curated cards with clear risk labels, token metrics, and direct links to on‑chain explorers. The layout uses bold typography, neon accents and motion to capture the degen culture while still keeping the UI structured and readable. Different sections focus on watchlists, wallet‑connected dashboards and educational tooltips that help new users understand what they are aping into before they commit. This project highlights how thoughtful UX and strong visual design can make speculative Web3 products feel more transparent, trustworthy and usable without killing the fun degen energy people love.",
+      "Degen is a Web3‑inspired product concept that reimagines how on‑chain communities discover, track and interact with high‑risk, high‑reward crypto and NFT plays. Instead of a chaotic feed, the interface organizes degen opportunities into curated cards with clear risk labels, token metrics, and direct links to on‑chain explorers.",
     accentColor: "#6366F1",
-    url: "https://example.com/degen",
+    url: "https://degen-subdomain.netlify.app/",
   },
 ];
 
@@ -77,14 +77,19 @@ const projects: Project[] = [
 export default function TopWorksShowcase() {
   const [showShowcase, setShowShowcase] = useState(false);
   const [currentProjectIndex, setCurrentProjectIndex] = useState(0);
+  
+  // 1. Scroll Trigger Setup
+  const sectionRef = useRef(null);
+  const isInView = useInView(sectionRef, { once: true, margin: "-10%" }); // Triggers when 10% of section is visible
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setShowShowcase(true);
-    }, 2500);
-
-    return () => clearTimeout(timer);
-  }, []);
+    if (isInView) {
+      const timer = setTimeout(() => {
+        setShowShowcase(true);
+      }, 2500); // Delay same as before, but now only starts after scroll
+      return () => clearTimeout(timer);
+    }
+  }, [isInView]);
 
   const handleNextProject = () => {
     setCurrentProjectIndex((prev) => (prev + 1) % projects.length);
@@ -102,16 +107,17 @@ export default function TopWorksShowcase() {
   }, [showShowcase]);
 
   return (
-    <section className="relative w-full min-h-screen bg-white overflow-hidden">
-      {/* TOP WORKS intro */}
+    <section ref={sectionRef} className="relative w-full min-h-screen bg-white overflow-hidden md:mt-[15vw] lg:mt-0">
+      
+      {/* TOP WORKS intro (Only visible initially) */}
       <motion.div
         className="absolute inset-0 flex flex-col items-center justify-center z-10"
         initial={{ opacity: 0 }}
-        animate={{
+        animate={isInView ? { // Only animate if in view
           opacity: showShowcase ? 0 : 1,
           scale: showShowcase ? 1.2 : 1,
           filter: showShowcase ? "blur(20px)" : "blur(0px)",
-        }}
+        } : { opacity: 0 }}
         transition={{
           duration: 1.2,
           ease: [0.76, 0, 0.24, 1],
@@ -121,7 +127,7 @@ export default function TopWorksShowcase() {
         <motion.h2
           className="text-6xl md:text-8xl lg:text-9xl xl:text-[12rem] font-bold tracking-tighter px-4"
           initial={{ opacity: 0, y: 80, scale: 0.9 }}
-          animate={{ opacity: 1, y: 0, scale: 1 }}
+          animate={isInView ? { opacity: 1, y: 0, scale: 1 } : {}}
           transition={{
             duration: 1.4,
             ease: [0.76, 0, 0.24, 1],
@@ -135,7 +141,7 @@ export default function TopWorksShowcase() {
         <motion.p
           className="mt-6 text-lg md:text-xl lg:text-2xl text-gray-600 max-w-2xl text-center px-4"
           initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{
             duration: 1.2,
             delay: 0.5,
@@ -146,7 +152,7 @@ export default function TopWorksShowcase() {
         </motion.p>
       </motion.div>
 
-      {/* PROJECT SHOWCASE */}
+      {/* PROJECT SHOWCASE (Visible after timeout) */}
       {showShowcase && (
         <motion.div
           initial={{ opacity: 0, y: 100 }}
@@ -197,7 +203,7 @@ function ProjectShowcase({ project, onNext }: { project: Project; onNext: () => 
     setBottomImageIndex(0);
   }, [project.id]);
 
-  // mouse move listener (global, but sphere is inside image container only)
+  // mouse move listener
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
       if (isHoveringImage) {
@@ -211,9 +217,12 @@ function ProjectShowcase({ project, onNext }: { project: Project; onNext: () => 
     return () => window.removeEventListener("mousemove", handleMouseMove);
   }, [isHoveringImage]);
 
-  const handleSphereClick = () => {
+  // 2. Robust Click Handler
+  const handleProjectClick = () => {
     if (!project.url) return;
-    window.open(project.url, "_blank", "noopener,noreferrer");
+    // Using window.open in a standard way
+    const win = window.open(project.url, "_blank");
+    if (win) win.focus();
   };
 
   return (
@@ -282,12 +291,14 @@ function ProjectShowcase({ project, onNext }: { project: Project; onNext: () => 
             </motion.div>
 
             {/* Images + custom cursor */}
+            {/* ADDED onClick HERE TO MAKE WHOLE AREA CLICKABLE */}
             <div
               ref={imageContainerRef}
               className="absolute top-[12vw] lg:top-[12vw] right-0 lg:right-[5vw] xl:right-[7vw] w-full px-6 lg:px-12"
               onMouseEnter={() => setIsHoveringImage(true)}
               onMouseLeave={() => setIsHoveringImage(false)}
-              style={{ cursor: isHoveringImage ? "none" : "auto" }}
+              onClick={handleProjectClick} // Click works on the entire area now
+              style={{ cursor: isHoveringImage ? "none" : "pointer" }}
             >
               <div className="flex justify-center">
                 <div className="relative w-[90%] lg:w-[85%] xl:w-[80%]">
@@ -355,21 +366,24 @@ function ProjectShowcase({ project, onNext }: { project: Project; onNext: () => 
                   {isHoveringImage && (
                     <motion.button
                       type="button"
-                      onClick={handleSphereClick}
-                      className="fixed z-50 flex items-center justify-center rounded-full bg-white text-black text-[11px] uppercase tracking-[0.16em] pointer-events-auto shadow-lg"
+                      // onClick handler is also here as backup
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleProjectClick();
+                      }}
+                      className="fixed z-50 flex items-center justify-center rounded-full bg-white text-black text-[11px] uppercase tracking-[0.16em] shadow-lg"
                       style={{
                         top: cursorPosition.y,
                         left: cursorPosition.x,
                         width: 90,
                         height: 90,
                         transform: "translate(-50%, -50%)",
+                        pointerEvents: "none", // Let click pass through to parent div
                       }}
                       initial={{ opacity: 0, scale: 0.4 }}
                       animate={{ opacity: 1, scale: 1 }}
                       exit={{ opacity: 0, scale: 0.4 }}
                       transition={{ duration: 0.18, ease: [0.76, 0, 0.24, 1] }}
-                      whileHover={{ scale: 1.08 }}
-                      whileTap={{ scale: 0.92 }}
                     >
                       <span className="text-center leading-tight">
                         view

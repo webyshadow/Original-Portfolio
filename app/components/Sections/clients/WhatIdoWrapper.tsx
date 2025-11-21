@@ -10,7 +10,7 @@ const WhatIdoWrapper = () => {
           <ServicesCarousel />
         </div>
         {/* 20% column */}
-        <div className="md:basis-[25%] md:max-w-[25%] flex md:flex-col">
+        <div className="hidden md:basis-[25%] md:max-w-[25%] lg:flex md:flex-col">
           <div className="hidden md:block h-10 rounded-full " />
           <div>
             <h2 className="mt-2 text-[5.8vw] font-extrabold capitalize w-[20vw] tracking-tight leading-[1em] text-black text-end">

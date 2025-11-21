@@ -1,12 +1,25 @@
 {
-  "name": "code",
-  "version": "0.1.0",
+  "name": "portfolio-shadmaan",
+  "version": "1.0.0",
   "private": true,
+  "description": "Portfolio of Shadmaan Ansari - Full Stack Developer & UI/UX Designer",
+  "author": {
+    "name": "Shadmaan Ansari",
+    "email": "ansari.shaws@gmail.com",
+    "url": "https://github.com/webyshadow"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "next lint",
+    "type-check": "tsc --noEmit",
+    "analyze": "ANALYZE=true next build",
+    "clean": "rm -rf .next out node_modules/.cache"
+  },
+  "engines": {
+    "node": ">=18.17.0",
+    "npm": ">=9.0.0"
   },
   "dependencies": {
     "@icons-pack/react-simple-icons": "^13.8.0",

@@ -395,7 +395,7 @@ export default function FigmaHeroBlock({ userType, setUserType }: FigmaHeroBlock
             className="relative w-full h-full"
           >
             <img
-              src="/me.3.png"
+              src="/me.3.webp"
               alt="Shadmaan Ansari"
               className="w-full h-full object-cover"
             />

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useInView } from "framer-motion"; // Added useInView
 import { ArrowRight } from "lucide-react";
 
 // ================== PROJECT DATA ==================
@@ -26,7 +26,7 @@ const projects: Project[] = [
     description:
       "Kabosu is a playful yet carefully crafted single‑page experience inspired by the legendary Shiba Inu that became the face of the Doge meme and modern meme‑coin culture. This concept project explores how to turn a meme‑driven community into a polished Web3‑ready brand website with clear token storytelling, on‑chain transparency sections and community highlights. The layout focuses on strong hero visuals, responsive UI and clean typography so holders, traders and new visitors instantly understand what Kabosu stands for without getting lost in noise. This work shows how meme projects can be presented with a professional, product‑grade interface instead of a typical low‑effort landing page. It combines smooth animations, bold branding, and conversion‑focused sections tailored for the next wave of Ethereum‑based meme tokens and NFT experiments.",
     accentColor: "#F59E0B",
-    url: "https://example.com/kabosu",
+    url: "https://kabosutoken.io/",
   },
   {
     id: 2,
@@ -37,7 +37,7 @@ const projects: Project[] = [
     description:
       "BeautyBlussh is a single‑vendor beauty and skincare e‑commerce web app designed for a modern D2C brand that wanted a clean, conversion‑focused storefront instead of a generic template. The project includes a full product catalog with filters, variants and detailed product pages, plus cart, checkout and order tracking flows built to feel fast and mobile‑first. Special attention is given to brand storytelling through rich imagery, soft gradients, and typography that matches the tone of a premium cosmetics label. Under the hood, the app is structured for scalable SEO with clean URLs, meta data and performance‑oriented layouts to help the brand rank for targeted beauty keywords. This case shows how a custom React/Next.js e‑commerce experience can make a small beauty brand look and feel like a polished, established online store from day one.",
     accentColor: "#EC4899",
-    url: "https://example.com/beautyblussh",
+    url: "https://beauty-bliss-the-beauty-brand.netlify.app/",
   },
   {
     id: 3,
@@ -58,7 +58,7 @@ const projects: Project[] = [
     description:
       "Deploy is a full‑stack dashboard concept for launching and monitoring modern Web3 and SaaS applications without overwhelming the user with raw dev tooling. The interface brings together deployment status, analytics, logs and environment configuration into a single, easy‑to‑scan layout inspired by real CI/CD and DevOps workflows. Each screen is designed to highlight the most important actions first, reducing cognitive load for founders and developers who just want to ship and iterate quickly. The project explores a component‑driven design system with reusable cards, tables and charts that adapt well to dark mode and high‑density data views. This work demonstrates how a complex technical product can still feel visually minimal, fast and human‑friendly while staying ready for real backend integrations and production deployments.",
     accentColor: "#10B981",
-    url: "https://example.com/deploy",
+    url: "https://deployyyyyyy.netlify.app/",
   },
   {
     id: 4,
@@ -69,22 +69,28 @@ const projects: Project[] = [
     description:
       "Degen is a Web3‑inspired product concept that reimagines how on‑chain communities discover, track and interact with high‑risk, high‑reward crypto and NFT plays. Instead of a chaotic feed, the interface organizes degen opportunities into curated cards with clear risk labels, token metrics, and direct links to on‑chain explorers. The layout uses bold typography, neon accents and motion to capture the degen culture while still keeping the UI structured and readable. Different sections focus on watchlists, wallet‑connected dashboards and educational tooltips that help new users understand what they are aping into before they commit. This project highlights how thoughtful UX and strong visual design can make speculative Web3 products feel more transparent, trustworthy and usable without killing the fun degen energy people love.",
     accentColor: "#6366F1",
-    url: "https://example.com/degen",
+    url: "https://degen-subdomain.netlify.app/",
   },
 ];
+
 
 // ================== MAIN COMPONENT ==================
 export default function TopWorksShowcase() {
   const [showShowcase, setShowShowcase] = useState(false);
   const [currentProjectIndex, setCurrentProjectIndex] = useState(0);
+  
+  // 1. Scroll Trigger Setup using useRef and useInView
+  const sectionRef = useRef(null);
+  const isInView = useInView(sectionRef, { once: true, margin: "-10%" });
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setShowShowcase(true);
-    }, 2500);
-
-    return () => clearTimeout(timer);
-  }, []);
+    if (isInView) {
+      const timer = setTimeout(() => {
+        setShowShowcase(true);
+      }, 2500);
+      return () => clearTimeout(timer);
+    }
+  }, [isInView]);
 
   const handleNextProject = () => {
     setCurrentProjectIndex((prev) => (prev + 1) % projects.length);
@@ -102,16 +108,16 @@ export default function TopWorksShowcase() {
   }, [showShowcase]);
 
   return (
-    <section className="relative w-full min-h-screen bg-white overflow-hidden">
+    <section ref={sectionRef} className="relative w-full min-h-screen bg-white overflow-hidden">
       {/* TOP WORKS intro */}
       <motion.div
         className="absolute inset-0 flex flex-col items-center justify-center z-10"
         initial={{ opacity: 0 }}
-        animate={{
+        animate={isInView ? {
           opacity: showShowcase ? 0 : 1,
           scale: showShowcase ? 1.2 : 1,
           filter: showShowcase ? "blur(20px)" : "blur(0px)",
-        }}
+        } : { opacity: 0 }}
         transition={{
           duration: 1.2,
           ease: [0.76, 0, 0.24, 1],
@@ -121,7 +127,7 @@ export default function TopWorksShowcase() {
         <motion.h2
           className="text-6xl md:text-8xl lg:text-9xl xl:text-[12rem] font-bold tracking-tighter px-4"
           initial={{ opacity: 0, y: 80, scale: 0.9 }}
-          animate={{ opacity: 1, y: 0, scale: 1 }}
+          animate={isInView ? { opacity: 1, y: 0, scale: 1 } : {}}
           transition={{
             duration: 1.4,
             ease: [0.76, 0, 0.24, 1],
@@ -135,7 +141,7 @@ export default function TopWorksShowcase() {
         <motion.p
           className="mt-6 text-lg md:text-xl lg:text-2xl text-gray-600 max-w-2xl text-center px-4"
           initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{
             duration: 1.2,
             delay: 0.5,
@@ -197,7 +203,7 @@ function ProjectShowcase({ project, onNext }: { project: Project; onNext: () => 
     setBottomImageIndex(0);
   }, [project.id]);
 
-  // mouse move listener (global, but sphere is inside image container only)
+  // mouse move listener
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
       if (isHoveringImage) {
@@ -211,7 +217,8 @@ function ProjectShowcase({ project, onNext }: { project: Project; onNext: () => 
     return () => window.removeEventListener("mousemove", handleMouseMove);
   }, [isHoveringImage]);
 
-  const handleSphereClick = () => {
+  // 2. Click Handler for Project URL
+  const handleProjectClick = () => {
     if (!project.url) return;
     window.open(project.url, "_blank", "noopener,noreferrer");
   };
@@ -287,6 +294,7 @@ function ProjectShowcase({ project, onNext }: { project: Project; onNext: () => 
               className="absolute top-[12vw] lg:top-[12vw] right-0 lg:right-[5vw] xl:right-[7vw] w-full px-6 lg:px-12"
               onMouseEnter={() => setIsHoveringImage(true)}
               onMouseLeave={() => setIsHoveringImage(false)}
+              onClick={handleProjectClick} // CLICKABLE CONTAINER
               style={{ cursor: isHoveringImage ? "none" : "auto" }}
             >
               <div className="flex justify-center">
@@ -355,7 +363,10 @@ function ProjectShowcase({ project, onNext }: { project: Project; onNext: () => 
                   {isHoveringImage && (
                     <motion.button
                       type="button"
-                      onClick={handleSphereClick}
+                      onClick={(e) => {
+                         e.stopPropagation(); 
+                         handleProjectClick();
+                      }}
                       className="fixed z-50 flex items-center justify-center rounded-full bg-white text-black text-[11px] uppercase tracking-[0.16em] pointer-events-auto shadow-lg"
                       style={{
                         top: cursorPosition.y,

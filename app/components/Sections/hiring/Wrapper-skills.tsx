@@ -154,3 +154,10 @@ function DisplayCardsDemo() {
 }
 
 export { DisplayCardsDemo };
+
+
+
+//seo
+//links project
+//top works and animations
+//phone view

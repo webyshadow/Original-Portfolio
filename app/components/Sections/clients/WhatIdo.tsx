@@ -1,4 +1,6 @@
-import { useState } from "react";
+"use client";
+
+import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import {
   SiNextdotjs,
@@ -104,7 +106,18 @@ const services: Service[] = [
 ];
 
 const ServicesCarousel = () => {
-  const [activeIndex, setActiveIndex] = useState(2); // Start with middle card active
+  const [activeIndex, setActiveIndex] = useState(2);
+  const [isDesktop, setIsDesktop] = useState(false);
+
+  useEffect(() => {
+    const check = () => {
+      setIsDesktop(window.innerWidth >= 768); // md breakpoint
+    };
+
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
 
   const handleCardClick = (clickedIndex: number) => {
     setActiveIndex(clickedIndex);
@@ -114,7 +127,6 @@ const ServicesCarousel = () => {
     const diff = index - activeIndex;
     const totalCards = services.length;
 
-    // Calculate position in circular manner
     let position = diff;
     if (Math.abs(diff) > totalCards / 2) {
       position = diff > 0 ? diff - totalCards : diff + totalCards;
@@ -124,26 +136,23 @@ const ServicesCarousel = () => {
   };
 
   const getCardStyle = (index: number) => {
+    if (!isDesktop) return {}; // mobile/tablet: koi transform nahi
+
     const position = getCardPosition(index);
     const isActive = position === 0;
     const isAdjacent = Math.abs(position) === 1;
 
-    // Base spacing between cards
     const spacing = 190;
     const translateX = position * spacing;
 
-    // Scale and opacity based on position
     const scale = isActive ? 1 : 0.85;
     const opacity = Math.abs(position) > 2 ? 0 : 1;
 
-    // Height based on position
     const baseHeight = 384;
     const height = isActive ? 480 : isAdjacent ? 440 : baseHeight;
 
-    // Adjust vertical position to grow from top (keep bottom aligned)
     const translateY = isActive ? -96 : isAdjacent ? -56 : 0;
 
-    // Z-index: center card highest, then decrease as we go to sides
     const zIndex = 10 - Math.abs(position);
 
     return {
@@ -155,10 +164,10 @@ const ServicesCarousel = () => {
   };
 
   return (
-    <div className="w-full py-10 px-4 overflow-hidden">
-      <div className="max-w-7xl">
-        <div className="relative h-[40vw] flex items-center justify-center">
-          <div className="relative w-full max-w-4xl flex items-center justify-center">
+    <div className="w-full py-6 sm:py-10 px-1 sm:px-4">
+      <div className="max-w-full sm:max-w-7xl mx-auto">
+        <div className="relative sm:h-[40vw] flex sm:items-center sm:justify-center">
+          <div className="relative w-full sm:max-w-4xl sm:flex sm:items-center sm:justify-center">
             {services.map((service, index) => {
               const position = getCardPosition(index);
               const isActive = position === 0;
@@ -167,26 +176,28 @@ const ServicesCarousel = () => {
                 <div
                   key={service.id}
                   className={cn(
-                    "absolute w-64 rounded-3xl p-6 cursor-pointer transition-all duration-700 ease-out flex flex-col bg-card border border-border bg-white text-black",
-                    isActive ? "shadow-2xl" : "shadow-lg hover:shadow-xl"
+                    "rounded-3xl p-5 sm:p-6 cursor-pointer transition-all duration-700 ease-out flex flex-col bg-card border border-border bg-white text-black",
+                    "w-full sm:w-64",
+                    "relative sm:absolute",
+                    isActive ? "shadow-2xl" : "shadow-lg hover:shadow-xl",
+                    "mb-4 sm:mb-0"
                   )}
                   style={getCardStyle(index)}
                   onClick={() => handleCardClick(index)}
                 >
                   <div className="flex flex-col h-full">
-                    {/* Title + text */}
                     <h3
                       className={cn(
-                        "font-bold mb-3 transition-all duration-300 text-black",
-                        isActive ? "text-2xl" : "text-xl"
+                        "font-bold mb-2 sm:mb-3 transition-all duration-300 text-black",
+                        isActive ? "text-lg sm:text-2xl" : "text-base sm:text-xl"
                       )}
                     >
                       {service.title}
                     </h3>
 
                     <div className="overflow-hidden transition-all duration-500 text-black/80 flex-1">
-                      {isActive ? (
-                        <div className="space-y-4 animate-fade-in">
+                      {isActive || !isDesktop ? (
+                        <div className="space-y-3 sm:space-y-4 animate-fade-in">
                           <p className="text-sm leading-relaxed">
                             {service.fullDescription}
                           </p>
@@ -198,8 +209,7 @@ const ServicesCarousel = () => {
                       )}
                     </div>
 
-                    {/* icons bottom par */}
-                    <div className="mt-4 pt-2 border-t border-black/5">
+                    <div className="mt-3 sm:mt-4 pt-2 border-t border-black/5">
                       {service.icon}
                     </div>
                   </div>
@@ -210,16 +220,16 @@ const ServicesCarousel = () => {
         </div>
 
         {/* Navigation dots */}
-        <div className="flex justify-center gap-2 -mt-[7vw]">
+        <div className="flex justify-center gap-1.5 sm:gap-2 mt-2 sm:-mt-[7vw]">
           {services.map((_, index) => (
             <button
               key={index}
               onClick={() => handleCardClick(index)}
               className={cn(
-                "w-2 h-2 rounded-full transition-all duration-300",
+                "h-2 rounded-full transition-all duration-300",
                 activeIndex === index
-                  ? "bg-black w-8"
-                  : "bg-black/40 hover:bg-muted-black/50"
+                  ? "bg-black w-6 sm:w-8"
+                  : "bg-black/40 hover:bg-black/60 w-2"
               )}
               aria-label={`Go to service ${index + 1}`}
             />

@@ -8,23 +8,31 @@ import ScrollProgress from './components/ScrollProgress';
 import ClientSections from './components/Sections/clients/ClientSections';
 import HiringSections from './components/Sections/hiring/HIringSections';
 import ExploreSections from './components/Sections/explore/ExploreSections';
+import MobileView from './components/MobileView'; // Import the new component
 
 export default function Home() {
   const [userType, setUserType] = useState<string>('project');
 
   return (
     <>
-      {/* Scroll Progress Bar */}
-      <ScrollProgress />
-      
-      <main>
-        <Hero userType={userType} setUserType={setUserType} />
+      {/* --- LAPTOP/DESKTOP VIEW (Hidden on small screens, Visible on lg+) --- */}
+      <div className="hidden lg:block">
+        <ScrollProgress />
         
-        {/* Conditional Section Rendering */}
-        {userType === 'project' && <ClientSections />}
-        {userType === 'hiring' && <HiringSections />}
-        {userType === 'explore' && <ExploreSections />}
-      </main>
+        <main>
+          <Hero userType={userType} setUserType={setUserType} />
+          
+          {/* Conditional Section Rendering */}
+          {userType === 'project' && <ClientSections />}
+          {userType === 'hiring' && <HiringSections />}
+          {userType === 'explore' && <ExploreSections />}
+        </main>
+      </div>
+
+      {/* --- MOBILE/TABLET VIEW (Visible on small screens, Hidden on lg+) --- */}
+      <div className="block lg:hidden">
+        <MobileView />
+      </div>
     </>
   );
 }
