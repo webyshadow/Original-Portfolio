@@ -3,7 +3,7 @@
 
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { useGLTF, useAnimations } from '@react-three/drei';
-import { Suspense, useEffect, useRef, useState, useCallback, memo } from 'react';
+import { Suspense, useEffect, useRef, memo } from 'react';
 import * as THREE from 'three';
 
 const modelPositionRef = { x: 0, y: -2.6 };
@@ -11,18 +11,27 @@ const modelPositionRef = { x: 0, y: -2.6 };
 // Model ko preload karo - page load hote hi
 useGLTF.preload('/models/me.glb');
 
+// Added startAnimation prop here
+interface HeroCanvasProps {
+  onModelLoaded: () => void;
+  startAnimation: boolean; 
+}
+
 interface ModelProps {
   onLoaded: () => void;
+  startAnimation: boolean;
 }
 
 // Memoized Model Component
-const Model = memo(({ onLoaded }: ModelProps) => {
+const Model = memo(({ onLoaded, startAnimation }: ModelProps) => {
   const groupRef = useRef<THREE.Group>(null);
   const { scene, animations } = useGLTF('/models/me.glb');
   const { actions } = useAnimations(animations, groupRef);
   const hasNotifiedLoadRef = useRef(false);
+  
+  // NEW: Ref to track when animation ACTUALLY starts
+  const startTimeRef = useRef<number | null>(null);
   const animationFrameIdRef = useRef<number | null>(null);
-  const startTimeRef = useRef<number>(Date.now());
 
   // Optimized load notification - only once
   useEffect(() => {
@@ -32,10 +41,9 @@ const Model = memo(({ onLoaded }: ModelProps) => {
     }
   }, [scene, onLoaded]);
 
-  // Initial setup - scale, rotation, shadows
+  // Initial setup - scale, rotation, shadows (NO CHANGES TO STYLES)
   useEffect(() => {
     if (!groupRef.current) return;
-
     const group = groupRef.current;
     group.scale.set(2, 2, 2);
     group.rotation.y = Math.PI / 2;
@@ -50,29 +58,38 @@ const Model = memo(({ onLoaded }: ModelProps) => {
     });
   }, []);
 
-  // Setup animation - only once
+  // Setup animation - only once but waits for startAnimation
   useEffect(() => {
     if (!actions || Object.keys(actions).length === 0) return;
-
     const walkAction = actions[Object.keys(actions)[0]];
+    
     if (walkAction) {
-      walkAction.reset();
-      walkAction.loop = THREE.LoopOnce;
-      walkAction.clampWhenFinished = true;
-      walkAction.timeScale = 0.8;
-      walkAction.play();
+      if (startAnimation) {
+        // Start walking only when video ends
+        walkAction.reset();
+        walkAction.loop = THREE.LoopOnce;
+        walkAction.clampWhenFinished = true;
+        walkAction.timeScale = 0.8;
+        walkAction.play();
+      } else {
+        walkAction.stop(); // Pause if video is playing
+      }
     }
-  }, [actions]);
+  }, [actions, startAnimation]);
 
   // Optimized position animation using requestAnimationFrame
   useEffect(() => {
+    // If video is still playing, do not start moving
+    if (!startAnimation) return;
+
+    // Set start time only when this runs
+    startTimeRef.current = Date.now();
     const duration = 12;
-    const startTime = startTimeRef.current;
 
     const animate = () => {
-      if (!groupRef.current) return;
+      if (!groupRef.current || !startTimeRef.current) return;
 
-      const elapsed = (Date.now() - startTime) / 1000;
+      const elapsed = (Date.now() - startTimeRef.current) / 1000;
 
       if (elapsed < duration) {
         const progress = elapsed / duration;
@@ -93,24 +110,36 @@ const Model = memo(({ onLoaded }: ModelProps) => {
         cancelAnimationFrame(animationFrameIdRef.current);
       }
     };
-  }, []);
+  }, [startAnimation]); // Re-run when startAnimation becomes true
 
   return <primitive ref={groupRef} object={scene} />;
 });
 
 Model.displayName = 'Model';
 
+
 // Optimized CameraFollower with ref-based state
-const CameraFollower = memo(() => {
+const CameraFollower = memo(({ startAnimation }: { startAnimation: boolean }) => {
   const { camera } = useThree();
-  const startTimeRef = useRef(Date.now());
+  
+  // Track start time separately
+  const startTimeRef = useRef<number | null>(null);
+  
   const lastPhase1PosRef = useRef(new THREE.Vector3(0, 0.5, 5));
   const lastPhase1LookAtRef = useRef(new THREE.Vector3(0, 0, 0));
   const phase1CompleteRef = useRef(false);
   const canvasHiddenRef = useRef(false);
 
+  // Set start time when video ends
+  useEffect(() => {
+    if (startAnimation) {
+      startTimeRef.current = Date.now();
+    }
+  }, [startAnimation]);
+
   useFrame(() => {
-    if (canvasHiddenRef.current) return;
+    // Wait until startAnimation is true
+    if (!startAnimation || !startTimeRef.current || canvasHiddenRef.current) return;
 
     const elapsed = (Date.now() - startTimeRef.current) / 1000;
     const totalDuration = 7; // 5 + 2
@@ -131,7 +160,7 @@ const CameraFollower = memo(() => {
       return;
     }
 
-    // Phase 1: Zoom in and follow (0-5s)
+    // Phase 1: Zoom in and follow (0-5s) (NO LOGIC CHANGES)
     if (elapsed < 5) {
       const zoomInDuration = 2;
       const zoomProgress = Math.min(elapsed / zoomInDuration, 1);
@@ -160,7 +189,6 @@ const CameraFollower = memo(() => {
       if (!phase1CompleteRef.current) {
         phase1CompleteRef.current = true;
       }
-
       const phaseProgress = Math.min((elapsed - 5) / 2, 1);
       const ease = Math.pow(phaseProgress, 1.5);
 
@@ -191,7 +219,8 @@ const CameraFollower = memo(() => {
 
 CameraFollower.displayName = 'CameraFollower';
 
-// Optimized SpotlightFollower
+
+// Optimized SpotlightFollower (EXACTLY SAME AS ORIGINAL)
 const SpotlightFollower = memo(() => {
   const spotlightRef = useRef<THREE.SpotLight>(null);
   const targetRef = useRef<THREE.Object3D>(new THREE.Object3D());
@@ -231,7 +260,8 @@ const SpotlightFollower = memo(() => {
 
 SpotlightFollower.displayName = 'SpotlightFollower';
 
-// Memoized Ground Plane
+
+// Memoized Ground Plane (EXACTLY SAME AS ORIGINAL)
 const GroundPlane = memo(() => (
   <mesh position={[0, -2, 0]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
     <planeGeometry args={[30, 30]} />
@@ -241,11 +271,9 @@ const GroundPlane = memo(() => (
 
 GroundPlane.displayName = 'GroundPlane';
 
-interface HeroCanvasProps {
-  onModelLoaded: () => void;
-}
 
-export const HeroCanvas = memo(({ onModelLoaded }: HeroCanvasProps) => {
+// Main Export - Updated to accept startAnimation
+export const HeroCanvas = memo(({ onModelLoaded, startAnimation }: HeroCanvasProps) => {
   return (
     <Canvas 
       camera={{ position: [0, 1, 10], fov: 50 }}
@@ -262,11 +290,11 @@ export const HeroCanvas = memo(({ onModelLoaded }: HeroCanvasProps) => {
       <ambientLight intensity={0.2} />
 
       <GroundPlane />
-      <CameraFollower />
+      <CameraFollower startAnimation={startAnimation} />
       <SpotlightFollower />
       
       <Suspense fallback={null}>
-        <Model onLoaded={onModelLoaded} />
+        <Model onLoaded={onModelLoaded} startAnimation={startAnimation} />
       </Suspense>
     </Canvas>
   );
